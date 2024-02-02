@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Listen, Prop, State, h } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 @Component({
@@ -22,11 +22,18 @@ export class MyComponent {
    */
   @Prop() last: string;
 
-  private getText(): string {
-    return format(this.first, this.middle, this.last);
+  @State() stateValue: string = 'foo';
+  
+  @Listen('ChangeValue')
+  onChangeValue(event: CustomEvent<string>) {
+    this.stateValue = event.detail;
   }
 
   render() {
     return <div>Hello, World! I'm {this.getText()}</div>;
+  }
+  
+  private getText(): string {
+    return format(this.first, this.middle, this.last);
   }
 }
